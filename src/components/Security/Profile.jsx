@@ -9,6 +9,7 @@ import {
   TextField,
   Button,
 } from '@material-ui/core'
+import ImageUploader from 'react-images-upload'
 
 import { useStateValue } from '../../firebase/store'
 import { FirebaseContext } from '../../firebase/fireContext'
@@ -63,6 +64,24 @@ export default function Profile() {
     })
   }
 
+  const onDrop = async pictures => {
+    await firebase
+      .storage()
+      .ref()
+      .child(`avatar/avatar_${firebase.auth().currentUser.uid}`)
+      .put(pictures[0])
+
+    const url = await firebase
+      .storage()
+      .ref()
+      .child(`avatar/avatar_${firebase.auth().currentUser.uid}`)
+      .getDownloadURL()
+
+    setUser({
+      photo: url,
+    })
+  }
+
   const updateAccount = async e => {
     e.preventDefault()
 
@@ -71,6 +90,7 @@ export default function Profile() {
         .firestore()
         .doc(`users/${firebase.auth().currentUser.uid}`)
         .set(user, { merge: true })
+
       dispatch({
         type: 'LOGIN',
         session: user,
@@ -129,6 +149,15 @@ export default function Profile() {
                 fullWidth
                 onChange={handleChange}
                 value={user.phone}
+              />
+            </Grid>
+            <Grid item xs={12} md={12}>
+              <ImageUploader
+                withIcon={true}
+                buttonText="Choose images"
+                onChange={onDrop}
+                imgExtension={['.jpg', '.gif', '.png', '.gif']}
+                maxFileSize={5242880}
               />
             </Grid>
           </Grid>

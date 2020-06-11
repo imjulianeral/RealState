@@ -156,7 +156,7 @@ const Header = ({ siteTitle }) => {
             Logout
           </Button>
           <Button color="inherit">{`${session.user.name} ${session.user.lastname}`}</Button>
-          <Avatar></Avatar>
+          <Avatar src={session.user.photo} />
         </div>
         <div className={classes.sectionMobile}>
           <IconButton
