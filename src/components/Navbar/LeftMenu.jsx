@@ -14,7 +14,7 @@ export default function LeftMenu({ classes }) {
       </List>
       <Divider />
       <List>
-        <ListItem component={Link} button to="">
+        <ListItem component={Link} button to="/app/new/property">
           <AddBox />
           <ListItemText
             className={classes.listItemText}
